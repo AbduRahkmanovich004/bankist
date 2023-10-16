@@ -132,7 +132,6 @@ btnLoan.addEventListener("click", (e) => {
 
 // for transfer money
 btnTransfer.addEventListener("click", () => {
-  
   if (accounts.indexOf(inputTransferTo.value) && inputTransferAmount.value>0 && inputTransferTo.value!=currentProfile.userID) {
     accounts.forEach((element) => {
       if (element.ownar == labelWelcome.textContent) {
