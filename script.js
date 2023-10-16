@@ -286,7 +286,7 @@ function displaySummary(account) {
 function swichAcount() {
   let working = false;
   accounts.forEach((element) => {
-    if (element.userID == username.value && element.pin == PIN.value) {
+    if (element.userID == username.value.toLowerCase() && element.pin == PIN.value) {
       displayMovements(element.movements, element.data);
       displayBalance(element.movements);
       displaySummary(element);
@@ -317,7 +317,7 @@ btnSort.addEventListener("click", () => {
 loginBtn.addEventListener("click", swichAcount);
 document.addEventListener("keydown", (e) => {
   if (e.key == "Enter") {
-    if (username.value && PIN.value) {
+    if (username.value.toLowerCase() && PIN.value) {
       swichAcount();
     }
   }
