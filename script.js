@@ -230,13 +230,13 @@ function displayMovements(movements, date) {
     console.log(i);
     i++;
   });
+  i = 0;
 }
 
 
 
 let sorted = false;
 function displayMovementsSort(movements, date) {
-  console.log(movements);
   let array
   if(!sorted){
     array = movements.slice();
@@ -254,13 +254,21 @@ function displayMovementsSort(movements, date) {
         <div class="movements__type movements__type--${type}">
           1 ${type}
         </div>
-        <div class="movements__date">${date[1].toLocaleString()}</div>
+        <div class="movements__date">${displayTime(date[i])}</div>
         <div class="movements__value">${move}$</div>
       </div>`;
     containerMovements.insertAdjacentHTML("afterbegin", html);
     i++;
   });
 }
+
+
+
+
+
+
+
+
 function displayBalance(movements) {
   let balance = movements.reduce((acc, element) => acc + element, 0);
   labelBalance.textContent = `${balance}$`;
