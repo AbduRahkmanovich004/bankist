@@ -114,21 +114,59 @@ function alert(text) {
 btnLoan.addEventListener("click", (e) => {
   e.preventDefault
   // for lent money
-  if (inputLoanAmount.value>0){
-    accounts.forEach((element) => {
-      if (element.ownar == labelWelcome.textContent) {
-        element.movements.push(+inputLoanAmount.value);
-        element.data.push(new Date());
-        displayBalance(element.movements);
-        displayMovements(element.movements, element.data);
-        displaySummary(element);
-        inputLoanAmount.value = "";
-      }
-    });
-  }else{
-    alert("You use wrong amound format !!!")
-  }
+  let isEnaught = currentProfile.movements.some(el=>el>=el*0.1)
+  setTimeout(()=>{
+    if(!isEnaught){
+      alert("This request will not be accepted.")
+    }
+    else if ( inputLoanAmount.value>0){
+      accounts.forEach((element) => {
+        if (element.ownar == labelWelcome.textContent) {
+          element.movements.push(+inputLoanAmount.value);
+          element.data.push(new Date());
+          displayBalance(element.movements);
+          displayMovements(element.movements, element.data);
+          displaySummary(element);
+          inputLoanAmount.value = "";
+        }
+      });
+    }else{
+      alert("You use wrong amound format !!!")
+    }
+  },3000)
 });
+
+
+
+function displayTime(date) {
+  let now = new Date();
+
+  function calcPassedDay(date1, date2) {
+    let day = Math.trunc(Math.abs(date1 - date2) / (1000 * 60 * 60 * 24));
+
+    if (date1.getHours() - date2.getHours() < 0) return ++day;
+    return day;
+  }
+  let passedDay = calcPassedDay(now, date);
+
+  let year = date.getFullYear();
+  let month = String(date.getMonth() + 1).padStart(2, '0');
+  let day = String(date.getDate()).padStart(2, '0');
+  let hour = String(date.getHours()).padStart(2, '0');
+  let minut = String(date.getMinutes()).padStart(2, '0');
+  // 15/10/2023, 21:30
+  if (passedDay == 0) return `Today, ${hour}:${minut}`;
+  if (passedDay == 1) return `Yesterday, ${hour}:${minut}`;
+
+  return `${day}/${month}/${year}, ${hour}:${minut}`;
+}
+
+
+
+
+
+
+
 
 // for transfer money
 btnTransfer.addEventListener("click", () => {
@@ -185,10 +223,11 @@ function displayMovements(movements, date) {
         <div class="movements__type movements__type--${type}">
           1 ${type}
         </div>
-        <div class="movements__date">${date[1].toLocaleString()}</div>
+        <div class="movements__date">${displayTime(date[i])}</div>
         <div class="movements__value">${move}$</div>
       </div>`;
     containerMovements.insertAdjacentHTML("afterbegin", html);
+    console.log(i);
     i++;
   });
 }
@@ -257,6 +296,7 @@ function swichAcount() {
       username.value = "";
       PIN.value = "";
       startTimer(5 * 60);
+      timeInSecs = 0;
       setTimeout(() => {
         containerApp.classList.add("hidden");
       }, 300_000);
